@@ -7,8 +7,8 @@ use [discord.js](https://github.com/discordjs/discord.js) in TypeScript to creat
 ### Clone project
 
 ```
-git clone https://github.com/yubinTW/discord-typescript-demo.git
-cd discord-typescript-demo
+git clone git@github.com:Timyu0527/Collabot.git
+cd Collabot
 ```
 
 ### Install Dependency
