@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, CommandInteraction, SlashCommandStringOption } from 'discord.js'
 import { SlashCommand } from '../types/command'
-import { getCities } from '../firebase/utils'
-import { db } from '../index'
+// import { getCities } from '../firebase/utils'
+// import { db } from '../index'
 
 export const PingSlashCommand: SlashCommand = {
   data: new SlashCommandBuilder()
@@ -19,8 +19,8 @@ export const PingSlashCommand: SlashCommand = {
         .setRequired(true)
     )
     .setDescription('Replies with Pong!'),
-  async execute(interaction: CommandInteraction) {
-    console.log(getCities(db, 'test'));
+  execute: async(interaction: CommandInteraction) => {
+    // console.log(getCities(db, 'test'));
     await interaction.reply('Pong!');
   }
 }
