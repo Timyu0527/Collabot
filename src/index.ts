@@ -6,6 +6,13 @@ import { AppConfig } from './types/config'
 import { setBotListener } from './bot'
 import { SlashCommand } from './types/command'
 import { cleanEnv, str } from 'envalid'
+import { FirebaseApp, initializeApp } from 'firebase/app'
+import { firebaseConfig } from './firebase/config'
+import { Firestore, getFirestore } from 'firebase/firestore/lite'
+
+// Initialize Firebase
+const app: FirebaseApp = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
 // Register commands
 const commandList: Array<SlashCommand> = [PingSlashCommand]
