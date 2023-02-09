@@ -5,9 +5,8 @@ import { deploySlashCommands } from './deploy'
 import { setBotListener } from './bot'
 import { SlashCommand } from './types/command'
 import { FirebaseApp, initializeApp } from 'firebase/app'
-import { firebaseConfig } from './firebase/config'
 import { Firestore, getFirestore } from 'firebase/firestore/lite'
-import { appConfig } from './config'
+import { appConfig, firebaseConfig } from './config'
 
 // Initialize Firebase
 const app: FirebaseApp = initializeApp(firebaseConfig);
