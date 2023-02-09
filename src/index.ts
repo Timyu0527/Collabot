@@ -1,39 +1,25 @@
 import { Client, GatewayIntentBits } from 'discord.js'
 import { PingSlashCommand } from './commands/ping'
+import { CreateBoardSlashCommand } from './commands/createBoard'
 import { deploySlashCommands } from './deploy'
-import dotenv from 'dotenv'
-import { AppConfig } from './types/config'
 import { setBotListener } from './bot'
 import { SlashCommand } from './types/command'
-import { cleanEnv, str } from 'envalid'
 import { FirebaseApp, initializeApp } from 'firebase/app'
 import { firebaseConfig } from './firebase/config'
 import { Firestore, getFirestore } from 'firebase/firestore/lite'
+import { appConfig } from './config'
 
 // Initialize Firebase
 const app: FirebaseApp = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+export const db: Firestore = getFirestore(app);
 
 // Register commands
-const commandList: Array<SlashCommand> = [PingSlashCommand]
+const commandList: Array<SlashCommand> = [
+  PingSlashCommand,
+  CreateBoardSlashCommand
+]
 
 // Read .env file (if exist)
-dotenv.config()
-
-// Read environment variables
-const env = cleanEnv(process.env, {
-  TOKEN: str(),
-  CLIENT_ID: str(),
-  GUILD_ID: str()
-})
-
-// Construct the main config of this app
-const appConfig: AppConfig = {
-  token: env.TOKEN,
-  clientId: env.CLIENT_ID,
-  guildId: env.GUILD_ID
-}
-
 // DiscordJS API Client: https://discord.js.org/#/docs/discord.js/main/class/Client
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 
