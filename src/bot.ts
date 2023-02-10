@@ -3,6 +3,9 @@ import { createBoard } from './service/board'
 import { createBoardModal } from './modal/board'
 import { SlashCommand } from './types/command'
 
+// import { startOrder,checkOrderStarted } from './service/food'
+// import { db } from './index'
+
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
     const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
 
@@ -42,19 +45,16 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         }
     })
 
-    client.on(Events.InteractionCreate, async (interaction) => {
+    // client.on(Events.InteractionCreate, async (interaction) => {
 
-        if (interaction.isButton() && interaction.customId == "food.order.accept") {
-            let userId=interaction.user.id;
-            console.log("clicked");
-                if (interaction.channel==null) return;
-                await interaction.channel.send(':middle_finger:');
-        } else if (interaction.isButton() && interaction.customId == "food.order.result"){
-            let userId=interaction.user.id;
-            console.log("clicked");
-                if (interaction.channel==null) return;
-                await interaction.channel.send(':middle_finger:');
-        }
-    })
+    //     if (interaction.isButton() && interaction.customId == "food.order.result"){
+    //         let userId=interaction.user.id;
+    //         let res=await checkOrderStarted(db,interaction.guildId??'',userId);
+    //         if(res) console.log("yes");
+    //         // await startOrder(db,interaction.guildId??'',userId);
+    //             if (interaction.channel==null) return;
+    //             await interaction.channel.send(':middle_finger:');
+    //     }
+    // })
 }
 
