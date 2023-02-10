@@ -1,4 +1,5 @@
-import { LocalizationMap, Snowflake, Permissions } from 'discord.js'
+import { LocalizationMap, Snowflake } from "discord.js"
+import { LabelNames, Prefs } from "./model"
 
 export type DeployCommandsResponse = Array<{
   id: Snowflake
@@ -14,7 +15,21 @@ export type DeployCommandsResponse = Array<{
   description_localizations?: LocalizationMap
   guild_id: Snowflake
 }>
-
 export type DiscordjsClientLoginError = {
   code: string
+}
+
+export type GetTrelloBoardResponse = {
+  id: string,
+  name: string,
+  desc: string,
+  descData: string | null,
+  closed: boolean,
+  idOrganization: string,
+  idEnterprise: string | null,
+  pinned: boolean,
+  url: string,
+  shortUrl: string,
+  prefs: Prefs,
+  labelNames: LabelNames, 
 }

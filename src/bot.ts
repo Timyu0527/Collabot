@@ -1,4 +1,5 @@
-import { Client, Collection, Events } from 'discord.js'
+import { Client, Collection, Events, ModalSubmitInteraction } from 'discord.js'
+import { createBoardModal } from './modal/createBoard'
 import { SlashCommand } from './types/command'
 
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
@@ -9,11 +10,25 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
   })
 
   client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isChatInputCommand()) return
+      if (!interaction.isModalSubmit()) return;
+      const modalInteraction = interaction as ModalSubmitInteraction; 
+      await modalInteraction.reply('Your submission was received successfully!');
+      console.log(interaction);
+  });
+
+  client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
 
     const command = commands.get(interaction.commandName)
 
     if (!command) return
+
+    if (interaction.commandName == 'board') {
+      const subcommand = interaction.options.getSubcommand();
+      if (subcommand == 'create') {
+        createBoardModal(interaction);
+      }
+    }
 
     try {
       await command.execute(interaction)
