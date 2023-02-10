@@ -1,8 +1,8 @@
+import dotenv from 'dotenv'
 import { Client, GatewayIntentBits } from 'discord.js'
 import { FoodSlashCommand } from './commands/food'
 import { PoleSlashCommand } from './commands/pole'
 import { deploySlashCommands } from './deploy'
-import dotenv from 'dotenv'
 import { AppConfig } from './types/config'
 import { setBotListener } from './bot'
 import { SlashCommand } from './types/command'
@@ -11,8 +11,6 @@ import { ChannelSlashCommand } from './commands/createChannel'
 import { AddSlashCommand } from './commands/addUser'
 import { KickSlashCommand } from './commands/kickUser'
 import { AlarmSlashCommand } from './commands/alarm'
-
-// Register commands
 import { FirebaseApp, initializeApp } from 'firebase/app'
 import { Firestore, getFirestore } from 'firebase/firestore'
 import { appConfig, firebaseConfig } from './config'
@@ -25,12 +23,12 @@ export const db: Firestore = getFirestore(app)
 // Register commands
 const commandList: Array<SlashCommand> = [
   BoardSlashCommand,
-  FoodSlashCommand,
-  PoleSlashCommand,
-  ChannelSlashCommand,
-  AddSlashCommand,
-  KickSlashCommand,
-  AlarmSlashCommand
+  // FoodSlashCommand,
+  // PoleSlashCommand,
+  // ChannelSlashCommand,
+  // AddSlashCommand,
+  // KickSlashCommand,
+  // AlarmSlashCommand
 ]
 
 // Read .env file (if exist)
