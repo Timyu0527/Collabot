@@ -22,7 +22,13 @@ const commandList: Array<SlashCommand> = [
 
 // Read .env file (if exist)
 // DiscordJS API Client: https://discord.js.org/#/docs/discord.js/main/class/Client
-const client = new Client({ intents: [GatewayIntentBits.Guilds] })
+const client = new Client({ 
+    intents: [
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMessageReactions, 
+        GatewayIntentBits.GuildMessages
+    ] 
+})
 
 // Deploy commands to a Discord chat server
 deploySlashCommands(appConfig, commandList)
