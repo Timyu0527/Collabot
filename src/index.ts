@@ -1,5 +1,6 @@
 import { Client, GatewayIntentBits } from 'discord.js'
 import { FoodSlashCommand } from './commands/food'
+import { PoleSlashCommand } from './commands/pole'
 import { deploySlashCommands } from './deploy'
 import dotenv from 'dotenv'
 import { AppConfig } from './types/config'
@@ -25,6 +26,9 @@ export const db: Firestore = getFirestore(app);
 const commandList: Array<SlashCommand> = [
   BoardSlashCommand,
   FoodSlashCommand,
+  PoleSlashCommand,
+  BoardSlashCommand,
+  FoodSlashCommand,
   ChannelSlashCommand, AddSlashCommand, KickSlashCommand, AlarmSlashCommand]
 
 // Read .env file (if exist)
@@ -44,7 +48,13 @@ export const appConfig: AppConfig = {
 }
 
 // DiscordJS API Client: https://discord.js.org/#/docs/discord.js/main/class/Client
-export const client = new Client({ intents: [GatewayIntentBits.Guilds] })
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildMessages
+  ]
+})
 
 // Deploy commands to a Discord chat server
 deploySlashCommands(appConfig, commandList)
@@ -56,6 +66,6 @@ setBotListener(client, commandList)
 
 // Logs the client in, establishing a WebSocket connection to Discord.
 client
-    .login(appConfig.token)
-    .then(() => console.log(`Login successfully!`))
-    .catch((reason) => console.log(`Failed to login: ${reason}`))
+  .login(appConfig.token)
+  .then(() => console.log(`Login successfully!`))
+  .catch((reason) => console.log(`Failed to login: ${reason}`))
