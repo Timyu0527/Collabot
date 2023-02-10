@@ -16,18 +16,20 @@ export const AddSlashCommand: SlashCommand = {
         if (!channel) {
             await interaction.reply("無法獲取當前文字頻道")
         }
-        let user = interaction.options.getUser('使用者名稱') as User
-        try {
-            channel.permissionOverwrites.edit(user, {
-                SendMessages: true,
-                ViewChannel: true
-            })
-                .then(channel => console.log(channel.permissionOverwrites.cache.get(user.id)))
-                .catch(console.error);
-            await interaction.reply(`已將 ${user} 添加到頻道`)
-        } catch (error) {
-            console.log(error)
-            await interaction.reply("發生了一個錯誤，無法添加用戶到頻道")
+        else {
+            let user = interaction.options.getUser('使用者名稱') as User
+            try {
+                channel.permissionOverwrites.edit(user, {
+                    SendMessages: true,
+                    ViewChannel: true
+                })
+                    .then(channel => console.log(channel.permissionOverwrites.cache.get(user.id)))
+                    .catch(console.error);
+                await interaction.reply(`已將 ${user} 添加到頻道`)
+            } catch (error) {
+                console.log(error)
+                await interaction.reply("發生了一個錯誤，無法添加用戶到頻道")
+            }
         }
     }
 }
