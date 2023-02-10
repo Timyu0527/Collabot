@@ -7,7 +7,7 @@ export function deploySlashCommands(appConfig: AppConfig, commandList: Array<Sla
   const rest = new REST({ version: '10' }).setToken(appConfig.token)
   const putPayload = commandList.map((c) => c.data.toJSON())
 
-  return rest.put(Routes.applicationGuildCommands(appConfig.clientId, appConfig.guildId), {
+  return rest.put(Routes.applicationCommands(appConfig.clientId), {
     body: putPayload
   }) as Promise<DeployCommandsResponse>
 }
