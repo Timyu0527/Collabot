@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits } from 'discord.js'
 import { PingSlashCommand } from './commands/ping'
 import { FoodSlashCommand } from './commands/food'
+import { PoleSlashCommand } from './commands/pole'
 import { deploySlashCommands } from './deploy'
 import { setBotListener } from './bot'
 import { SlashCommand } from './types/command'
@@ -15,19 +16,20 @@ export const db: Firestore = getFirestore(app);
 
 // Register commands
 const commandList: Array<SlashCommand> = [
-    PingSlashCommand, 
+    PingSlashCommand,
     BoardSlashCommand,
-    FoodSlashCommand
+    FoodSlashCommand,
+    PoleSlashCommand
 ]
 
 // Read .env file (if exist)
 // DiscordJS API Client: https://discord.js.org/#/docs/discord.js/main/class/Client
-const client = new Client({ 
+const client = new Client({
     intents: [
-        GatewayIntentBits.Guilds, 
-        GatewayIntentBits.GuildMessageReactions, 
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.GuildMessages
-    ] 
+    ]
 })
 
 // Deploy commands to a Discord chat server
