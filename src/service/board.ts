@@ -5,7 +5,7 @@ import { Board, Card, CheckList, List } from '../types/model/board'
 import { collection, addDoc, getDocs } from 'firebase/firestore'
 import { db } from '..'
 
-const getBoardName = async (boardId: string): Promise<string> => {
+export const getBoardName = async (boardId: string): Promise<string> => {
     let boardName = ''
     await fetch(`https://api.trello.com/1/board/${boardId}?${trelloAPIKeyAndToken}`, {
         method: 'GET',
@@ -29,7 +29,7 @@ const getBoardName = async (boardId: string): Promise<string> => {
     return boardName
 }
 
-const getCards = async (boardId: string): Promise<Map<string, Array<Card>>> => {
+export const getCards = async (boardId: string): Promise<Map<string, Array<Card>>> => {
     let listsDetail = new Map<string, Array<Card>>()
     await fetch(`https://api.trello.com/1/board/${boardId}/cards?${trelloAPIKeyAndToken}`, {
         method: 'GET',
@@ -87,7 +87,7 @@ const getCards = async (boardId: string): Promise<Map<string, Array<Card>>> => {
     return listsDetail
 }
 
-const getLists = async (boardId: string): Promise<Array<List>> => {
+export const getLists = async (boardId: string): Promise<Array<List>> => {
     let lists = new Array<List>()
     await fetch(`https://api.trello.com/1/boards/${boardId}/lists?${trelloAPIKeyAndToken}`, {
         method: 'GET',
@@ -118,7 +118,7 @@ const getLists = async (boardId: string): Promise<Array<List>> => {
     return lists
 }
 
-const getCheckLists = async (boardId: string) => {
+export const getCheckLists = async (boardId: string) => {
     let checkLists = new Map<string, Array<CheckList>>()
     await fetch(`https://api.trello.com/1/boards/${boardId}/checklists?${trelloAPIKeyAndToken}`, {
         method: 'GET',
@@ -162,10 +162,6 @@ const getCheckLists = async (boardId: string) => {
         })
     return checkLists
 }
-
-// export getMembers = async (boardId: string) => {
-//     let members = new Array<Member>()V
-
 
 export const getBoard = async (interaction: StringSelectMenuInteraction) => {
     // console.log(interaction)

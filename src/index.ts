@@ -15,6 +15,7 @@ import { FirebaseApp, initializeApp } from 'firebase/app'
 import { Firestore, getFirestore } from 'firebase/firestore'
 import { appConfig, firebaseConfig } from './config'
 import { BoardSlashCommand } from './commands/board'
+import { ListSlashCommand } from './commands/list'
 
 // Initialize Firebase
 const app: FirebaseApp = initializeApp(firebaseConfig)
@@ -23,6 +24,7 @@ export const db: Firestore = getFirestore(app)
 // Register commands
 const commandList: Array<SlashCommand> = [
   BoardSlashCommand,
+  ListSlashCommand,
   // FoodSlashCommand,
   // PoleSlashCommand,
   // ChannelSlashCommand,

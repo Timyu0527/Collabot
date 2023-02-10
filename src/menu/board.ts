@@ -1,7 +1,7 @@
 import { ActionRowBuilder, APISelectMenuOption, CommandInteraction, StringSelectMenuBuilder } from 'discord.js'
 import { getAllBoards } from '../service/board'
-
 import { Board } from '../types/model/board'
+
 export const createBoardSelectMenu= async (interaction: CommandInteraction): Promise<void> => {
     const boards: Array<Board> = await getAllBoards(interaction)
     let opts = new Array<APISelectMenuOption>()
@@ -12,7 +12,7 @@ export const createBoardSelectMenu= async (interaction: CommandInteraction): Pro
         })
     })
     const boardMenu = new StringSelectMenuBuilder()
-            .setCustomId('select')
+            .setCustomId('boardMenu')
             .setPlaceholder('Nothing selected')
             .addOptions(opts)
 

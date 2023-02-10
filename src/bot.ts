@@ -5,73 +5,84 @@ import { SlashCommand } from './types/command'
 import { createBoardSelectMenu } from './menu/board'
 import { List } from './types/model/board'
 import { createBoardEmbed } from './embed/board'
+import { createListSelectMenu } from './menu/list'
 
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
-    const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
+  const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
+  let boardId: string
+  client.once(Events.ClientReady, () => {
+    console.log('Bot Ready!')
+  })
 
-    client.once(Events.ClientReady, () => {
-        console.log('Bot Ready!')
-    })
-
-    client.on(Events.InteractionCreate, async (interaction) => {
-      if(!interaction.isStringSelectMenu()) return
-
+  client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isStringSelectMenu()) return
+    if (interaction.customId == 'boardMenu') {
+      boardId = interaction.values[0]
       await interaction.deferReply()
-      const board: {name: string, Lists: Array<List>} = await getBoard(interaction)
+      const board: { name: string, Lists: Array<List> } = await getBoard(interaction)
       const boardEmbed = await createBoardEmbed(board)
-      await interaction.editReply({embeds: [boardEmbed]})
-    })
+      await interaction.editReply({ embeds: [boardEmbed] })
+    }
+  })
 
-    client.on(Events.InteractionCreate, async (interaction) => {
-        if (!interaction.isModalSubmit()) return
-        await createBoard(interaction)
-        await interaction.reply('Your submission was received successfully!')
-    })
+  client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isModalSubmit()) return
+    await createBoard(interaction)
+    await interaction.reply('Your submission was received successfully!')
+  })
 
-    client.on(Events.InteractionCreate, async (interaction) => {
-        if (!interaction.isChatInputCommand()) return
+  client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isChatInputCommand()) return
 
-        const command = commands.get(interaction.commandName)
+    const command = commands.get(interaction.commandName)
 
-        if (!command) return
+    if (!command) return
 
-        if (interaction.commandName == 'board') {
-            const subcommand = interaction.options.getSubcommand()
-            if (subcommand == 'create') {
-              createBoardModal(interaction)
-            }
-            else if(subcommand == 'get') {
-              createBoardSelectMenu(interaction)
-            }
-        }
+    if (interaction.commandName == 'board') {
+      const subcommand = interaction.options.getSubcommand()
+      if (subcommand == 'create') {
+        createBoardModal(interaction)
+      }
+      else if (subcommand == 'get') {
+        createBoardSelectMenu(interaction)
+      }
+    }
+    else if (interaction.commandName == 'list') {
+      const subcommand = interaction.options.getSubcommand()
+      if (subcommand == 'get') {
+        await createBoardSelectMenu(interaction)
+        await createListSelectMenu(interaction, boardId)
+      }
 
-        try {
-            await command.execute(interaction)
-        } catch (error) {
-            console.error(error)
-            await interaction.reply({
-                content: 'There was an error while executing this command!',
-                ephemeral: true
-            })
-        }
-    })
 
-    client.on(Events.InteractionCreate, async (interaction) => {
+      try {
+        await command.execute(interaction)
+      } catch (error) {
+        console.error(error)
+        await interaction.reply({
+          content: 'There was an error while executing this command!',
+          ephemeral: true
+        })
+      }
+    }
+  })
 
-        if (interaction.isButton() && interaction.customId == "food.order.accept") {
-            let userId=interaction.user.id
-            console.log("clicked")
-                if (interaction.channel==null) return
-                await interaction.channel.send(':middle_finger:')
-        } else if (interaction.isButton() && interaction.customId == "food.order.result"){
-            let userId=interaction.user.id
-            console.log("clicked")
-                if (interaction.channel==null) return
-                await interaction.channel.send(':middle_finger:')
-        }
-    })
+  client.on(Events.InteractionCreate, async (interaction) => {
 
-    client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.isButton() && interaction.customId == "food.order.accept") {
+      let userId = interaction.user.id
+      console.log("clicked")
+      if (interaction.channel == null) return
+      await interaction.channel.send(':middle_finger:')
+    } else if (interaction.isButton() && interaction.customId == "food.order.result") {
+      let userId = interaction.user.id
+      console.log("clicked")
+      if (interaction.channel == null) return
+      await interaction.channel.send(':middle_finger:')
+    }
+  })
+
+  client.on(Events.InteractionCreate, async (interaction) => {
     const wait = (ms: number) => {
       return new Promise(async resolve => {
         setTimeout(resolve, ms);
