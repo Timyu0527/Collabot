@@ -6,7 +6,7 @@ import { Board } from '../types/model';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '..';
 
-export const getAllBoards = async (interaction: CommandInteraction): Promise<string> => {
+export const getAllBoards = async (interaction: CommandInteraction) => {
     let boardList: Array<Board> = new Array<Board>();
     await fetch(`https://api.trello.com/1/members/me?key=${env.TRELLO_API_KEY}&token=${env.TRELLO_TOKEN}`, {
         method: 'GET',
