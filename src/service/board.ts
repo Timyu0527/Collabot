@@ -22,14 +22,16 @@ export const getBoard = async (interaction: StringSelectMenuInteraction) => {
             return response.text()
         })
         .then((text: string) => {
-            console.log(text)
+            const res: Array<any> = JSON.parse(text)
+            // console.log(text)
+            console.log(res)
             board = text
         })
         .catch((err) => {
             console.error(err)
         })
 
-    return board
+    return board.toString()
 }
 
 export const getAllBoards = async (interaction: CommandInteraction): Promise<Array<Board>> => {

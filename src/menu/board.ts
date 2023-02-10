@@ -2,7 +2,7 @@ import { ActionRowBuilder, APISelectMenuOption, CommandInteraction, StringSelect
 import { getAllBoards } from '../service/board'
 
 import { Board } from '../types/model/board'
-export const getBoardSelectMenu= async (interaction: CommandInteraction): Promise<void> => {
+export const createBoardSelectMenu= async (interaction: CommandInteraction): Promise<void> => {
     const boards: Array<Board> = await getAllBoards(interaction)
     let opts = new Array<APISelectMenuOption>()
     boards.forEach((board: Board) => {
