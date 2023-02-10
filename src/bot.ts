@@ -75,6 +75,7 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         console.log(error)
       }
     }
+    const maxTimeWait = 2000000000
     if (interaction.isModalSubmit() && interaction.customId == "alarm.countdown") {
       try {
         let time: Array<string> = interaction.fields.getTextInputValue('time').split(":")
@@ -87,10 +88,9 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
           await interaction.reply({ content: `這段時間已經過去了!請輸入正常時間!` });
         else {
           await interaction.reply({ content: `在${interaction.fields.getTextInputValue('time')}後提醒 ${interaction.fields.getTextInputValue('mes')}` });
-          while (totalTime > 2000000000) {
-            console.log(totalTime)
-            await (wait(2000000000))
-            totalTime -= 2000000000
+          while (totalTime > maxTimeWait) {
+            await (wait(maxTimeWait))
+            totalTime -= maxTimeWait
           }
           await (wait(totalTime))
           if (interaction.guildId == null) {
@@ -119,9 +119,9 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
           await interaction.reply({ content: `這段時間已經過去了!請輸入正常時間!` });
         else {
           await interaction.reply({ content: `在${interaction.fields.getTextInputValue('time')}時提醒 ${interaction.fields.getTextInputValue('mes')}` });
-          while (totalTime > 2000000000) {
-            await (wait(2000000000))
-            totalTime -= 2000000000
+          while (totalTime > maxTimeWait) {
+            await (wait(maxTimeWait))
+            totalTime -= maxTimeWait
           }
           await (wait(totalTime))
           if (interaction.guildId == null) {
