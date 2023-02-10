@@ -28,14 +28,14 @@ export const BoardSlashCommand: SlashCommand = {
             const boards = await getAllBoards(interaction)
 
 
-            if (boards){
+            if (boards) {
                 let boardsStr = new String('```\n')
 
-                for (let i = 0; i < boards.length; ++i){
+                for (let i = 0; i < boards.length; ++i) {
                     boardsStr += `${i + 1}. ${boards[i].name} (${boards[i].id})\n`
                 }
                 boardsStr += '```'
-                await interaction.reply({ content: boardsStr.toString()})
+                await interaction.reply({ content: boardsStr.toString() })
             }
             else await interaction.reply({ content: 'No boards found.' })
         }

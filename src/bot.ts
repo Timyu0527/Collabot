@@ -5,81 +5,27 @@ import { SlashCommand } from './types/command'
 import { createBoardSelectMenu } from './menu/board'
 
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
-    const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
+  const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
 
-    client.once(Events.ClientReady, () => {
-        console.log('Bot Ready!')
-    })
+  client.once(Events.ClientReady, () => {
+    console.log('Bot Ready!')
+  })
 
-    client.on(Events.InteractionCreate, async (interaction) => {
-      if(!interaction.isStringSelectMenu()) return
+  client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isStringSelectMenu()) return
+    const board: string = await getBoard(interaction)
+    await interaction.reply('You selected card successfully!')
+  })
 
-      const board: string = await getBoard(interaction)
-      await interaction.reply('You selected card successfully!')
-    })
-
-    client.on(Events.InteractionCreate, async (interaction) => {
-        if (!interaction.isModalSubmit()) return
-        await createBoard(interaction)
-        await interaction.reply('Your submission was received successfully!')
-    })
-
-    client.on(Events.InteractionCreate, async (interaction) => {
-        if (!interaction.isChatInputCommand()) return
-
-        const command = commands.get(interaction.commandName)
-
-        if (!command) return
-
-        if (interaction.commandName == 'board') {
-            const subcommand = interaction.options.getSubcommand()
-            if (subcommand == 'create') {
-              createBoardModal(interaction)
-            }
-            else if(subcommand == 'get') {
-              createBoardSelectMenu(interaction)
-            }
-        }
-
-        try {
-            await command.execute(interaction)
-        } catch (error) {
-            console.error(error)
-            await interaction.reply({
-                content: 'There was an error while executing this command!',
-                ephemeral: true
-            })
-        }
-    })
-
-    client.on(Events.InteractionCreate, async (interaction) => {
-
-        if (interaction.isButton() && interaction.customId == "food.order.accept") {
-            let userId=interaction.user.id
-            console.log("clicked")
-                if (interaction.channel==null) return
-                await interaction.channel.send(':middle_finger:')
-        } else if (interaction.isButton() && interaction.customId == "food.order.result"){
-            let userId=interaction.user.id
-            console.log("clicked")
-                if (interaction.channel==null) return
-                await interaction.channel.send(':middle_finger:')
-        }
-    })
-
-    client.on(Events.InteractionCreate, async (interaction) => {
+  client.on(Events.InteractionCreate, async (interaction) => {
     const wait = (ms: number) => {
       return new Promise(async resolve => {
         setTimeout(resolve, ms);
       })
     }
-    if (interaction.isButton() && interaction.customId == "close") {
-      try {
-        interaction.channel?.delete()
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    if (!interaction.isModalSubmit()) return
+    if (interaction.customId === "newBoardModal")
+      await createBoard(interaction)
     if (interaction.isModalSubmit() && interaction.customId == "myModal") {
       try {
         console.log(interaction)
@@ -119,8 +65,8 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         console.log(error)
       }
     }
-
     if (interaction.isModalSubmit() && interaction.customId == "alarm.notify") {
+      console.log("?")
       try {
         let time: Array<string> = interaction.fields.getTextInputValue('time').split(":")
         let timestamp = new Array<number>()
@@ -149,6 +95,54 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         console.log(error)
       }
     }
+    // await interaction.reply('Your submission was received successfully!')
+  })
+
+  client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isChatInputCommand()) return
+    const command = commands.get(interaction.commandName)
+    if (!command) return
+    if (interaction.commandName == 'board') {
+      const subcommand = interaction.options.getSubcommand()
+      if (subcommand == 'create') {
+        createBoardModal(interaction)
+      }
+      else if (subcommand == 'get') {
+        createBoardSelectMenu(interaction)
+      }
+    }
+
+    try {
+      await command.execute(interaction)
+    } catch (error) {
+      console.error(error)
+      await interaction.reply({
+        content: 'There was an error while executing this command!',
+        ephemeral: true
+      })
+    }
+  })
+
+  client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.isButton() && interaction.customId == "food.order.accept") {
+      let userId = interaction.user.id
+      console.log("clicked")
+      if (interaction.channel == null) return
+      await interaction.channel.send(':middle_finger:')
+    } else if (interaction.isButton() && interaction.customId == "food.order.result") {
+      let userId = interaction.user.id
+      console.log("clicked")
+      if (interaction.channel == null) return
+      await interaction.channel.send(':middle_finger:')
+    }
+    if (interaction.isButton() && interaction.customId == "close") {
+      try {
+        interaction.channel?.delete()
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
   })
 }
 

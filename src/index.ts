@@ -22,13 +22,13 @@ export const db: Firestore = getFirestore(app)
 
 // Register commands
 const commandList: Array<SlashCommand> = [
-  BoardSlashCommand,
+  // BoardSlashCommand,
   // FoodSlashCommand,
   // PoleSlashCommand,
-  // ChannelSlashCommand,
-  // AddSlashCommand,
-  // KickSlashCommand,
-  // AlarmSlashCommand
+  ChannelSlashCommand,
+  AddSlashCommand,
+  KickSlashCommand,
+  AlarmSlashCommand
 ]
 
 // Read .env file (if exist)

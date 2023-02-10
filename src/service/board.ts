@@ -55,14 +55,14 @@ export const getAllBoards = async (interaction: CommandInteraction): Promise<Arr
             return boardIdList
         })
         .then(async () => {
-            try{
+            try {
                 const querySnapshot = await getDocs(collection(db, 'boards'))
                 querySnapshot.forEach((doc) => {
                     const board = doc.data() as Board
                     boardList.push(board)
                 })
             }
-            catch(e){
+            catch (e) {
                 console.log('Error getting documents: ', e)
             }
         })
@@ -86,7 +86,7 @@ export const createBoard = async (interaction: ModalSubmitInteraction): Promise<
         .then(async (text: string) => {
             const res: CreateTrelloBoardResponse = JSON.parse(text)
             boardId = res.id
-            
+
             if (boardId === null) return
 
             const board: Board = {
