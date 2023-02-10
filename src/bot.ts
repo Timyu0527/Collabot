@@ -1,6 +1,7 @@
-import { Client, Collection, Events, ModalSubmitInteraction } from 'discord.js'
-import { createBoard } from './commands/utility'
-import { createBoardModal } from './modal/createBoard'
+import { Client, Collection, Events } from 'discord.js'
+import { createBoard, getBoard } from './service/board'
+import { createBoardModal } from './modal/board'
+import { getBoardSelectMenu } from './menu/board'
 import { SlashCommand } from './types/command'
 
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
@@ -11,22 +12,33 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
   })
 
   client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isModalSubmit()) return;
-    interaction = interaction as ModalSubmitInteraction;
-    await interaction.reply('Your submission was received successfully!');
+    if (!interaction.isModalSubmit()) return
+
     await createBoard(interaction)
-  });
+    await interaction.reply('Your submission was received successfully!')
+  })
 
   client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isChatInputCommand()) return;
+    if(!interaction.isStringSelectMenu()) return
+
+    const board = await getBoard(interaction)
+    console.log(board.toString())
+    // await interaction.reply(board.toString())
+  })
+
+  client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isChatInputCommand()) return
 
     const command = commands.get(interaction.commandName)
     if (!command) return
 
     if (interaction.commandName == 'board') {
-      const subcommand = interaction.options.getSubcommand();
+      const subcommand = interaction.options.getSubcommand()
       if (subcommand == 'create') {
-        createBoardModal(interaction);
+        createBoardModal(interaction)
+      }
+      else if (subcommand == 'get') {
+        getBoardSelectMenu(interaction)
       }
     }
 

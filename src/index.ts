@@ -19,8 +19,8 @@ import { firebaseConfig } from './config'
 import { BoardSlashCommand } from './commands/board'
 
 // Initialize Firebase
-const app: FirebaseApp = initializeApp(firebaseConfig);
-export const db: Firestore = getFirestore(app);
+const app: FirebaseApp = initializeApp(firebaseConfig)
+export const db: Firestore = getFirestore(app)
 
 // Register commands
 const commandList: Array<SlashCommand> = [

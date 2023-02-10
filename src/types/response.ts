@@ -1,5 +1,5 @@
 import { LocalizationMap, Snowflake } from "discord.js"
-import { LabelNames, Prefs } from "./model"
+import { LabelNames, Prefs } from "./model/board"
 
 export type DeployCommandsResponse = Array<{
   id: Snowflake
