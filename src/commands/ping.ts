@@ -20,7 +20,7 @@ export const PingSlashCommand: SlashCommand = {
     )
     .setDescription('Replies with Pong!'),
   execute: async(interaction: CommandInteraction) => {
-    // console.log(getCities(db, 'test'));
-    await interaction.reply('Pong!');
+    // console.log(getCities(db, 'test'))
+    await interaction.reply('Pong!')
   }
 }
