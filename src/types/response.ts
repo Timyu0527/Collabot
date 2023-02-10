@@ -33,3 +33,18 @@ export type GetTrelloBoardResponse = {
   prefs: Prefs,
   labelNames: LabelNames, 
 }
+
+export type CreateTrelloBoardResponse = {
+  id: string,
+  name: string,
+  desc: string,
+  descData: string | null,
+  closed: boolean,
+  idOrganization: string,
+  idEnterprise: string | null,
+  pinned: boolean,
+  url: string,
+  shortUrl: string,
+  prefs: Prefs,
+  labelNames: LabelNames,
+}

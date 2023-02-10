@@ -8,7 +8,6 @@ dotenv.config()
 export const env = cleanEnv(process.env, {
     DISCORD_BOT_TOKEN: str(),
     DISCORD_CLIENT_ID: str(),
-    DISCORD_GUILD_ID: str(),
     TRELLO_API_KEY: str(),
     TRELLO_TOKEN: str(),
     FIREBASE_API_KEY: str(),
@@ -24,7 +23,6 @@ export const env = cleanEnv(process.env, {
 export const appConfig: AppConfig = {
     token: env.DISCORD_BOT_TOKEN,
     clientId: env.DISCORD_CLIENT_ID,
-    guildId: env.DISCORD_GUILD_ID
 }
 
 // Construct the config for Firebase

@@ -2,10 +2,10 @@ import { ActionRowBuilder, CommandInteraction, ModalActionRowComponentBuilder, M
 
 export const createBoardModal = async (interaction: CommandInteraction): Promise<void> => {
     const modal = new ModalBuilder()
-        .setCustomId('NEW_BOARD')
+        .setCustomId('newBoardModal')
         .setTitle('Create New Board!');
     const boardNameInput = new TextInputBuilder()
-        .setCustomId('BOARD_NAME')
+        .setCustomId('boardName')
         .setLabel('Board Name')
         .setStyle(TextInputStyle.Short);
 

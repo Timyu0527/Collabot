@@ -1,6 +1,6 @@
-import { SlashCommandBuilder, CommandInteraction, SlashCommandStringOption } from 'discord.js';
+import { SlashCommandBuilder, CommandInteraction, CommandInteractionOptionResolver } from 'discord.js';
 import { SlashCommand } from '../types/command';
-import { getAllBoards } from './utility';
+import { getAllBoards, createBoard} from './utility';
 
 export const BoardSlashCommand: SlashCommand = {
     data: new SlashCommandBuilder()
@@ -17,11 +17,15 @@ export const BoardSlashCommand: SlashCommand = {
         )
         .setDescription('board command.'),
     execute: async (interaction: CommandInteraction) => {
-        await interaction.deferReply();
+        const opts = interaction.options as CommandInteractionOptionResolver;
+        const subcommand: string = opts.getSubcommand();
+        if (subcommand == 'list') {
+            await interaction.deferReply();
 
-        const boards = await getAllBoards(interaction)
+            const boards = await getAllBoards(interaction)
 
-        if(boards) await interaction.editReply({ content: boards });
-        else await interaction.editReply({ content: 'No boards found.' });
+            if (boards) await interaction.editReply({ content: boards });
+            else await interaction.editReply({ content: 'No boards found.' });
+        }
     }
 }
