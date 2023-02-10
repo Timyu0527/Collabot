@@ -1,11 +1,10 @@
-import { Client, Collection, Events, ModalSubmitInteraction } from 'discord.js'
+import { Client, Collection, Events } from 'discord.js'
 import { createBoard, getBoard } from './service/board'
 import { createBoardModal } from './modal/board'
 import { SlashCommand } from './types/command'
 import { createBoardSelectMenu } from './menu/board'
-
-// import { startOrder,checkOrderStarted } from './service/food'
-// import { db } from './index'
+import { List } from './types/model/board'
+import { createBoardEmbed } from './embed/board'
 
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
     const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
@@ -17,8 +16,10 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
     client.on(Events.InteractionCreate, async (interaction) => {
       if(!interaction.isStringSelectMenu()) return
 
-      const board: string = await getBoard(interaction)
-      await interaction.reply('You selected card successfully!')
+      await interaction.deferReply()
+      const board: {name: string, Lists: Array<List>} = await getBoard(interaction)
+      const boardEmbed = await createBoardEmbed(board)
+      await interaction.editReply({embeds: [boardEmbed]})
     })
 
     client.on(Events.InteractionCreate, async (interaction) => {
@@ -69,6 +70,7 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
     //     }
     // })
 
+<<<<<<< HEAD
     client.on(Events.InteractionCreate, async (interaction) => {
     const wait = (ms: number) => {
       return new Promise(async resolve => {
@@ -115,6 +117,67 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
             await interaction.channel?.send(`@everyone ${interaction.fields.getTextInputValue('mes')}`);
           }
         }
+=======
+        if (interaction.isButton() && interaction.customId == "food.order.accept") {
+            let userId=interaction.user.id
+            console.log("clicked")
+                if (interaction.channel==null) return
+                await interaction.channel.send(':middle_finger:')
+        } else if (interaction.isButton() && interaction.customId == "food.order.result"){
+            let userId=interaction.user.id
+            console.log("clicked")
+                if (interaction.channel==null) return
+                await interaction.channel.send(':middle_finger:')
+        }
+    })
+
+    client.on(Events.InteractionCreate, async (interaction) => {
+    const wait = (ms: number) => {
+      return new Promise(async resolve => {
+        setTimeout(resolve, ms);
+      })
+    }
+    if (interaction.isButton() && interaction.customId == "close") {
+      try {
+        interaction.channel?.delete()
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if (interaction.isModalSubmit() && interaction.customId == "myModal") {
+      try {
+        console.log(interaction)
+        await interaction.reply({ content: '創建成功!' });
+      } catch (error) {
+        await interaction.reply({ content: '發生了一個錯誤，無法添加頻道' })
+        console.log(error)
+      }
+    }
+    const maxTimeWait = 2000000000
+    if (interaction.isModalSubmit() && interaction.customId == "alarm.countdown") {
+      try {
+        let time: Array<string> = interaction.fields.getTextInputValue('time').split(":")
+        let timestamp = new Array<number>()
+        time.forEach((value: string) => {
+          timestamp.push(Number(value))
+        })
+        let totalTime = (timestamp[0] * 3600 + timestamp[1] * 60 + timestamp[2]) * 1000
+        if (totalTime < 0)
+          await interaction.reply({ content: `這段時間已經過去了!請輸入正常時間!` });
+        else {
+          await interaction.reply({ content: `在${interaction.fields.getTextInputValue('time')}後提醒 ${interaction.fields.getTextInputValue('mes')}` });
+          while (totalTime > maxTimeWait) {
+            await (wait(maxTimeWait))
+            totalTime -= maxTimeWait
+          }
+          await (wait(totalTime))
+          if (interaction.guildId == null) {
+            await interaction.user.send(`${interaction.fields.getTextInputValue('mes')}`);
+          } else {
+            await interaction.channel?.send(`@everyone ${interaction.fields.getTextInputValue('mes')}`);
+          }
+        }
+>>>>>>> main
       }
       catch (error) {
         await interaction.reply({ content: `錯誤 請稍後在試!` });
