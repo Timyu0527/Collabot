@@ -24,10 +24,10 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
   })
 
   client.on('interactionCreate', async (interaction) => {
-    const wait = async (ms: number) => {
-      return new Promise(resolve => {
+    const wait = (ms: number) => {
+      return new Promise(async resolve => {
         setTimeout(resolve, ms);
-      });
+      })
     }
     if (interaction.isButton() && interaction.customId == "close") {
       try {
@@ -52,13 +52,22 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         time.forEach((value: string) => {
           timestamp.push(Number(value))
         })
-        let totalTime: number = (timestamp[0] * 3600 + timestamp[1] * 60 + timestamp[2]) * 1000
+        let totalTime = (timestamp[0] * 3600 + timestamp[1] * 60 + timestamp[2]) * 1000
         if (totalTime < 0)
           await interaction.reply({ content: `這段時間已經過去了!請輸入正常時間!` });
         else {
-          await interaction.reply({ content: `在${interaction.fields.getTextInputValue('time')}後提醒你${interaction.fields.getTextInputValue('mes')}` });
+          await interaction.reply({ content: `在${interaction.fields.getTextInputValue('time')}後提醒 ${interaction.fields.getTextInputValue('mes')}` });
+          while (totalTime > 2000000000) {
+            console.log(totalTime)
+            await (wait(2000000000))
+            totalTime -= 2000000000
+          }
           await (wait(totalTime))
-          await interaction.user.send(`${interaction.fields.getTextInputValue('mes')}`);
+          if (interaction.guildId == null) {
+            await interaction.user.send(`${interaction.fields.getTextInputValue('mes')}`);
+          } else {
+            await interaction.channel?.send(`@everyone ${interaction.fields.getTextInputValue('mes')}`);
+          }
         }
       }
       catch (error) {
@@ -75,13 +84,21 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
           timestamp.push(Number(value))
         })
         let alarm = new Date(timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4], timestamp[5])
-        let totalTime: number = alarm.getTime() - new Date().getTime()
+        let totalTime = alarm.getTime() - new Date().getTime()
         if (totalTime < 0)
           await interaction.reply({ content: `這段時間已經過去了!請輸入正常時間!` });
         else {
-          await interaction.reply({ content: `在${interaction.fields.getTextInputValue('time')}時提醒你${interaction.fields.getTextInputValue('mes')}` });
+          await interaction.reply({ content: `在${interaction.fields.getTextInputValue('time')}時提醒 ${interaction.fields.getTextInputValue('mes')}` });
+          while (totalTime > 2000000000) {
+            await (wait(2000000000))
+            totalTime -= 2000000000
+          }
           await (wait(totalTime))
-          await interaction.user.send(`${interaction.fields.getTextInputValue('mes')}`);
+          if (interaction.guildId == null) {
+            await interaction.user.send(`${interaction.fields.getTextInputValue('mes')}`);
+          } else {
+            await interaction.channel?.send(`@everyone ${interaction.fields.getTextInputValue('mes')}`);
+          }
         }
       } catch (error) {
         await interaction.reply({ content: `錯誤 請稍後在試!` });
