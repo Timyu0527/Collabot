@@ -7,14 +7,14 @@ export const PollSlashCommand: SlashCommand = {
         .setName('poll')
         .addStringOption(option =>
             option.setName('title')
-                .setDescription('the title of the pole'))
+                .setDescription('the title of the poll'))
         .addStringOption(option =>
             option.setName('choice')
                 .setDescription('Separated by commas(maximum:20)'))
         .addStringOption(option =>
             option.setName('time')
                 .setDescription('the due time'))
-        .setDescription('start pole')
+        .setDescription('start poll')
     ,
     async execute(interaction: CommandInteraction) {
         // const title = interaction.options.data.values().next().value.value;
@@ -50,8 +50,8 @@ export const PollSlashCommand: SlashCommand = {
         for (let i = 0; i < Math.min(20, choices.length); i++) {
             const reaction: number = polestart + i
             let embedField: EmbedField = {
-                name: choices[i],
-                value: String.fromCodePoint(reaction)
+                name: choices[i] + '\t' + String.fromCodePoint(reaction),
+                value: " "
             }
             embedFields.push(embedField);
         }
@@ -59,7 +59,7 @@ export const PollSlashCommand: SlashCommand = {
         const exampleEmbed = new EmbedBuilder()
             .setColor(0x0099FF)
             .setTitle(title)
-            .setDescription(`the pole will end in ${time} `)
+            .setDescription(`the poll will end in ${time} `)
             .addFields(embedFields);
         // const message = await interaction.reply({ content: 'react', fetchReply: true });
         const message = await interaction.reply({ embeds: [exampleEmbed], fetchReply: true });
