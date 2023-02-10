@@ -2,65 +2,52 @@ export type Board = {
     id: string,
     name: string,
     guildId: string
+    Lists: Array<List>
 }
 
-export type Prefs = {
-    permissionLevel: string,
-    hideVotes: boolean,
-    voting: string,
-    comments: string,
-    invitations: string,
-    selfJoin: boolean,
-    cardCovers: boolean,
-    isTemplate: boolean,
-    cardAging: string,
-    calendarFeedEnabled: boolean,
-    hiddenPluginBoardButtons?: Array<any>,
-    switcherViews?: Array<any>,
-    background: string,
-    backgroundColor: null,
-    backgroundImage: string,
-    backgroundImageScaled: Array<any>,
-    backgroundTile: boolean,
-    backgroundBrightness: string,
-    backgroundBottomColor: string,
-    backgroundTopColor: string,
-    canBePublic: boolean,
-    canBeEnterprise: boolean,
-    canBeOrg: boolean,
-    canBePrivate: boolean,
-    canInvite: boolean
+export type List = {
+    id: string,
+    name: string, 
+    boardId: string
+    Cards: Array<Card>
 }
 
-export type LabelNames = {
-    green: string,
-    yellow: string,
-    orange: string,
-    red: string,
-    purple: string,
-    blue: string,
-    sky: string,
-    lime: string,
-    pink: string,
-    black: string,
-    green_dark: string,
-    yellow_dark: string,
-    orange_dark: string,
-    red_dark: string,
-    purple_dark: string,
-    blue_dark: string,
-    sky_dark: string,
-    lime_dark: string,
-    pink_dark: string,
-    black_dark: string,
-    green_light: string,
-    yellow_light: string,
-    orange_light: string,
-    red_light: string,
-    purple_light: string,
-    blue_light: string,
-    sky_light: string,
-    lime_light: string,
-    pink_light: string,
-    black_light: string
+
+export type Card = {
+    id: string,
+    name: string,
+    boardId: string,
+    listId: string,
+    memberIds: Array<string>,
+    checkLists: Array<CheckList>,
+    checkListIds: Array<string>,
+    labelIds: Array<string>,
+    labels: Array<Label>,
+    due: string,
+    desc: string,
+    url: string,
+}
+
+export type Label = {
+    id: string,
+    name: string,
+    color: string,
+    boardId: string
+}
+
+export type CheckList = {
+    id: string,
+    name: string,
+    boardId: string,
+    cardId: string,
+    checkItems: Array<CheckItem>
+}
+
+export type CheckItem = {
+    id: string,
+    name: string,
+    state: string,
+    checkListId: string,
+    memberId: string,
+    due: string,
 }
