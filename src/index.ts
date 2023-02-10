@@ -17,7 +17,7 @@ export const db: Firestore = getFirestore(app);
 const commandList: Array<SlashCommand> = [
     PingSlashCommand, 
     BoardSlashCommand,
-    FoodSlashCommand,
+    FoodSlashCommand
 ]
 
 // Read .env file (if exist)
