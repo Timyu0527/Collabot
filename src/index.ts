@@ -1,7 +1,5 @@
 import { Client, GatewayIntentBits } from 'discord.js'
 import { PingSlashCommand } from './commands/ping'
-import { ScheduleSlashCommand } from './commands/schedule'
-import { CreateBoardSlashCommand } from './commands/createBoard'
 import { FoodSlashCommand } from './commands/food'
 import { deploySlashCommands } from './deploy'
 import { setBotListener } from './bot'
@@ -9,6 +7,7 @@ import { SlashCommand } from './types/command'
 import { FirebaseApp, initializeApp } from 'firebase/app'
 import { Firestore, getFirestore } from 'firebase/firestore/lite'
 import { appConfig, firebaseConfig } from './config'
+import { BoardSlashCommand } from './commands/board'
 
 // Initialize Firebase
 const app: FirebaseApp = initializeApp(firebaseConfig);
@@ -17,9 +16,8 @@ export const db: Firestore = getFirestore(app);
 // Register commands
 const commandList: Array<SlashCommand> = [
     PingSlashCommand, 
-    ScheduleSlashCommand, 
-    CreateBoardSlashCommand,
-    FoodSlashCommand
+    BoardSlashCommand,
+    FoodSlashCommand,
 ]
 
 // Read .env file (if exist)
