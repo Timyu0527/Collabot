@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import { Client, GatewayIntentBits } from 'discord.js'
 import { FoodSlashCommand } from './commands/food'
-import { PoleSlashCommand } from './commands/pole'
+import { PollSlashCommand } from './commands/pole'
 import { deploySlashCommands } from './deploy'
 import { AppConfig } from './types/config'
 import { setBotListener } from './bot'
@@ -22,9 +22,9 @@ export const db: Firestore = getFirestore(app)
 
 // Register commands
 const commandList: Array<SlashCommand> = [
-  BoardSlashCommand,
+//   BoardSlashCommand,
   // FoodSlashCommand,
-  // PoleSlashCommand,
+  PollSlashCommand,
   // ChannelSlashCommand,
   // AddSlashCommand,
   // KickSlashCommand,
