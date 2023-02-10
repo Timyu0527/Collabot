@@ -3,7 +3,7 @@ import { SlashCommand } from '../types/command'
 import { db } from '../index'
 import { addRestaurant } from '../firebase/utility'
 import { getRestaurant } from '../firebase/utility'
-import { DocumentData } from 'firebase/firestore/lite'
+import { DocumentData } from 'firebase/firestore'
 
 export const FoodSlashCommand: SlashCommand = {
     data: new SlashCommandBuilder()

@@ -1,4 +1,4 @@
-import { collection, getDocs, Firestore, DocumentData,addDoc,where,query, Query } from 'firebase/firestore/lite';
+import { collection, getDocs, Firestore, DocumentData,addDoc,where,query, Query } from 'firebase/firestore';
 
 export async function getCities(db: Firestore, collectionName: string){
     const querySnapshot = await getDocs(collection(db, collectionName));
