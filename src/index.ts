@@ -5,7 +5,7 @@ import { deploySlashCommands } from './deploy'
 import { setBotListener } from './bot'
 import { SlashCommand } from './types/command'
 import { FirebaseApp, initializeApp } from 'firebase/app'
-import { Firestore, getFirestore } from 'firebase/firestore/lite'
+import { Firestore, getFirestore } from 'firebase/firestore'
 import { appConfig, firebaseConfig } from './config'
 import { BoardSlashCommand } from './commands/board'
 

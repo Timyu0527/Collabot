@@ -1,27 +1,28 @@
 import { Client, Collection, Events, ModalSubmitInteraction } from 'discord.js'
+import { createBoard } from './commands/utility'
 import { createBoardModal } from './modal/createBoard'
 import { SlashCommand } from './types/command'
 
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
-    const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
+  const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
 
-    client.once(Events.ClientReady, () => {
-        console.log('Bot Ready!')
-    })
+  client.once(Events.ClientReady, () => {
+    console.log('Bot Ready!')
+  })
 
   client.on(Events.InteractionCreate, async (interaction) => {
-      if (!interaction.isModalSubmit()) return;
-      const modalInteraction = interaction as ModalSubmitInteraction; 
-      await modalInteraction.reply('Your submission was received successfully!');
-      console.log(interaction);
+    if (!interaction.isModalSubmit()) return;
+    interaction = interaction as ModalSubmitInteraction;
+    await interaction.reply('Your submission was received successfully!');
+    await createBoard(interaction)
   });
 
   client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-        const command = commands.get(interaction.commandName)
+    const command = commands.get(interaction.commandName)
 
-        if (!command) return
+    if (!command) return
 
     if (interaction.commandName == 'board') {
       const subcommand = interaction.options.getSubcommand();
