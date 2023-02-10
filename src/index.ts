@@ -2,6 +2,8 @@ import dotenv from 'dotenv'
 import { Client, GatewayIntentBits } from 'discord.js'
 import { FoodSlashCommand } from './commands/food'
 import { PollSlashCommand } from './commands/pole'
+import { AbsenceSlashCommand } from './commands/absence'
+import { getAbsenceCommand } from './commands/absence'
 import { deploySlashCommands } from './deploy'
 import { AppConfig } from './types/config'
 import { setBotListener } from './bot'
@@ -22,13 +24,15 @@ export const db: Firestore = getFirestore(app)
 
 // Register commands
 const commandList: Array<SlashCommand> = [
-//   BoardSlashCommand,
-  // FoodSlashCommand,
-  PollSlashCommand,
-  // ChannelSlashCommand,
-  // AddSlashCommand,
-  // KickSlashCommand,
-  // AlarmSlashCommand
+    // BoardSlashCommand,
+    // FoodSlashCommand,
+    PollSlashCommand,
+    AbsenceSlashCommand,
+    getAbsenceCommand,
+    // ChannelSlashCommand,
+    // AddSlashCommand,
+    // KickSlashCommand,
+    // AlarmSlashCommand
 ]
 
 // Read .env file (if exist)
@@ -36,23 +40,23 @@ dotenv.config()
 
 // DiscordJS API Client: https://discord.js.org/#/docs/discord.js/main/class/Client
 export const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessageReactions,
-    GatewayIntentBits.GuildMessages
-  ]
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildMessages
+    ]
 })
 
 // Deploy commands to a Discord chat server
 deploySlashCommands(appConfig, commandList)
-  .then((response) => console.log(`Deploy ${response.length} commands: ${response.map((c) => c.name)} successfully!`))
-  .catch((reason) => console.log(`Failed to deploy commands: ${reason}`))
+    .then((response) => console.log(`Deploy ${response.length} commands: ${response.map((c) => c.name)} successfully!`))
+    .catch((reason) => console.log(`Failed to deploy commands: ${reason}`))
 
 // Add event listener from discord
 setBotListener(client, commandList)
 
 // Logs the client in, establishing a WebSocket connection to Discord.
 client
-  .login(appConfig.token)
-  .then(() => console.log(`Login successfully!`))
-  .catch((reason) => console.log(`Failed to login: ${reason}`))
+    .login(appConfig.token)
+    .then(() => console.log(`Login successfully!`))
+    .catch((reason) => console.log(`Failed to login: ${reason}`))
