@@ -40,6 +40,7 @@ use [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk#linux)
 
 ```
 npm run deploy
+test
 ```
 
 See [App Engin Guide](./app-engine-guide.md)

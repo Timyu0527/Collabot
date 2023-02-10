@@ -1,6 +1,7 @@
 export type Board = {
     id: string,
     name: string,
+    guildId: string
 }
 
 export type Prefs = {

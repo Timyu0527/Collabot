@@ -1,9 +1,8 @@
-import { SlashCommandBuilder, CommandInteraction, SlashCommandStringOption, EmbedBuilder, Embed, CommandInteractionOptionResolver, EmbedAuthorOptions, ActionRowBuilder, ButtonBuilder, ButtonStyle, APIEmbedField } from 'discord.js'
+import { SlashCommandBuilder, CommandInteraction, SlashCommandStringOption, EmbedBuilder, CommandInteractionOptionResolver, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedAuthorOptions } from 'discord.js'
 import { SlashCommand } from '../types/command'
 import { db } from '../index'
-import { addRestaurant } from '../firebase/utility'
-import { getRestaurant } from '../firebase/utility'
-import { DocumentData } from 'firebase/firestore'
+import { addRestaurant, } from '../service/food'
+import { DocumentData, Firestore } from 'firebase/firestore'
 
 export const FoodSlashCommand: SlashCommand = {
     data: new SlashCommandBuilder()
@@ -140,15 +139,15 @@ export const FoodSlashCommand: SlashCommand = {
                                 .setDescription(`店家名稱: ${infoRes[i]['name']}\n店家電話: ${telInEmbed}`)
                                 .setImage(infoRes[i]['image'])
                                 .setColor('#0000ff')
-                                .setTimestamp();
-                            embeds.push(embed);
+                                .setTimestamp()
+                            embeds.push(embed)
                         }
-                        await interaction.reply({ embeds: embeds, ephemeral: true });
+                        await interaction.reply({ embeds: embeds })
                     }
-                    break;
+                    break
                 default:
-                    await interaction.reply('default');
-                    break;
+                    await interaction.reply('default')
+                    break
             }
         } else if (opts.getSubcommand() === 'order') {
             const orderName: string = opts.getString('name', true);
@@ -207,4 +206,8 @@ export const FoodSlashCommand: SlashCommand = {
             }
         }
     }
+}
+
+function getRestaurant(db: Firestore, infoName: string, arg2: string, id: string): DocumentData[] | PromiseLike<DocumentData[]> {
+    throw new Error('Function not implemented.')
 }

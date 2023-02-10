@@ -35,3 +35,5 @@ export const firebaseConfig: FirebaseConfig = {
     appId: env.FIREBASE_APP_ID,
     measurementId: env.FIREBASE_MEASUREMENT_ID
 }
+
+export const trelloAPIKeyAndToken = `key=${env.TRELLO_API_KEY}&token=${env.TRELLO_TOKEN}`

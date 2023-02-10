@@ -1,6 +1,6 @@
 import { Client, Collection, Events, ModalSubmitInteraction } from 'discord.js'
-import { createBoard } from './commands/utility'
-import { createBoardModal } from './modal/createBoard'
+import { createBoard } from './service/board'
+import { createBoardModal } from './modal/board'
 import { SlashCommand } from './types/command'
 
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
@@ -42,7 +42,7 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         }
     })
 
-    client.on('interactionCreate', async (interaction) => {
+    client.on(Events.InteractionCreate, async (interaction) => {
 
         if (interaction.isButton() && interaction.customId == "food.order.accept") {
             let userId=interaction.user.id;
@@ -57,3 +57,4 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         }
     })
 }
+
