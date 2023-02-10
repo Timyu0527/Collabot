@@ -48,7 +48,7 @@ export const getAllBoards = async (interaction: CommandInteraction): Promise<Arr
         })
         .then((text: string) => {
             let profile: any = JSON.parse(text)
-            // console.log(object.idBoards)
+            // console.log(profile.idBoards)
             let boardIdList: Array<string> = profile.idBoards
             return boardIdList
         })
