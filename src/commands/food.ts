@@ -1,7 +1,17 @@
-import { SlashCommandBuilder, CommandInteraction, SlashCommandStringOption, EmbedBuilder, CommandInteractionOptionResolver, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedAuthorOptions } from 'discord.js'
+import { 
+    SlashCommandBuilder,
+    CommandInteraction,
+    SlashCommandStringOption,
+    EmbedBuilder,
+    CommandInteractionOptionResolver,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    EmbedAuthorOptions
+} from 'discord.js'
 import { SlashCommand } from '../types/command'
 import { db } from '../index'
-import { addRestaurant, } from '../service/food'
+import { addRestaurant, getRestaurant } from '../service/food'
 import { DocumentData, Firestore } from 'firebase/firestore'
 
 export const FoodSlashCommand: SlashCommand = {
@@ -69,7 +79,7 @@ export const FoodSlashCommand: SlashCommand = {
                     let addImageUrl = '';
                     if (addImage != null) addImageUrl = addImage.url;
                     try {
-                        let addCheckExist: DocumentData[] = await getRestaurant(db, addName, interaction.guildId ?? '', interaction.user.id);
+                        let addCheckExist: Array<DocumentData> = await getRestaurant(db, addName, interaction.guildId ?? '', interaction.user.id);
                         if (addCheckExist.length != 0) {
                             let cannotAddEmbed = new EmbedBuilder()
                                 .setTitle(`無法新增${addName}`)
@@ -86,6 +96,7 @@ export const FoodSlashCommand: SlashCommand = {
                             .setDescription(':thinking:')
                             .setColor('#ff0000')
                             .setTimestamp();
+                        console.log(err)
                         await interaction.reply({ embeds: [errEmbed] });
                         return;
                     }
@@ -206,8 +217,4 @@ export const FoodSlashCommand: SlashCommand = {
             }
         }
     }
-}
-
-function getRestaurant(db: Firestore, infoName: string, arg2: string, id: string): DocumentData[] | PromiseLike<DocumentData[]> {
-    throw new Error('Function not implemented.')
 }
