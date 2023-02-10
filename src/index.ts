@@ -1,4 +1,5 @@
 import { Client, GatewayIntentBits } from 'discord.js'
+import { FoodSlashCommand } from './commands/food'
 import { deploySlashCommands } from './deploy'
 import dotenv from 'dotenv'
 import { AppConfig } from './types/config'
@@ -11,7 +12,21 @@ import { KickSlashCommand } from './commands/kickUser'
 import { AlarmSlashCommand } from './commands/alarm'
 
 // Register commands
-const commandList: Array<SlashCommand> = [ChannelSlashCommand, AddSlashCommand, KickSlashCommand, AlarmSlashCommand]
+import { FirebaseApp, initializeApp } from 'firebase/app'
+import { Firestore, getFirestore } from 'firebase/firestore'
+import { firebaseConfig } from './config'
+import { BoardSlashCommand } from './commands/board'
+
+// Initialize Firebase
+const app: FirebaseApp = initializeApp(firebaseConfig);
+export const db: Firestore = getFirestore(app);
+
+// Register commands
+const commandList: Array<SlashCommand> = [
+  BoardSlashCommand,
+  FoodSlashCommand,
+  ChannelSlashCommand, AddSlashCommand, KickSlashCommand, AlarmSlashCommand]
+
 // Read .env file (if exist)
 dotenv.config()
 
@@ -26,7 +41,6 @@ const env = cleanEnv(process.env, {
 export const appConfig: AppConfig = {
   token: env.TOKEN,
   clientId: env.CLIENT_ID,
-  guildId: env.GUILD_ID
 }
 
 // DiscordJS API Client: https://discord.js.org/#/docs/discord.js/main/class/Client
@@ -42,7 +56,6 @@ setBotListener(client, commandList)
 
 // Logs the client in, establishing a WebSocket connection to Discord.
 client
-  .login(appConfig.token)
-  .then(() => console.log(`Login successfully!`))
-  .catch((reason) => console.log(`Failed to login: ${reason}`))
-
+    .login(appConfig.token)
+    .then(() => console.log(`Login successfully!`))
+    .catch((reason) => console.log(`Failed to login: ${reason}`))
