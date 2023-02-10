@@ -9,7 +9,7 @@ import { db } from '..'
 export const getBoard = async (interaction: StringSelectMenuInteraction) => {
     const boardId = interaction.values[0]
     let board = new String('')
-    await fetch(`https://api.trello.com/1/boards/${boardId}/lists?${trelloAPIKeyAndToken}`, {
+    await fetch(`https://api.trello.com/1/boards/${boardId}/cards?${trelloAPIKeyAndToken}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'

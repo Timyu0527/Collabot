@@ -27,28 +27,38 @@ const commandList: Array<SlashCommand> = [
   BoardSlashCommand,
   FoodSlashCommand,
   PoleSlashCommand,
-  BoardSlashCommand,
-  FoodSlashCommand,
-  ChannelSlashCommand, AddSlashCommand, KickSlashCommand, AlarmSlashCommand]
+  ChannelSlashCommand,
+  AddSlashCommand,
+  KickSlashCommand,
+  AlarmSlashCommand
+]
 
 // Read .env file (if exist)
 dotenv.config()
 
 // Read environment variables
 const env = cleanEnv(process.env, {
-  TOKEN: str(),
-  CLIENT_ID: str(),
-  GUILD_ID: str()
+  DISCORD_CLIENT_ID: str(),
+  DISCORD_BOT_TOKEN: str(),
+  TRELLO_API_KEY: str(),
+  TRELLO_TOKEN: str(),
+  FIREBASE_API_KEY: str(),
+  FIREBASE_AUTH_DOMAIN: str(),
+  FIREBASE_PROJECT_ID: str(),
+  FIREBASE_STORAGE_BUCKET: str(),
+  FIREBASE_MESSAGING_SENDER_ID: str(),
+  FIREBASE_APP_ID: str(),
+  FIREBASE_MEASUREMENT_ID: str()
 })
 
 // Construct the main config of this app
 export const appConfig: AppConfig = {
-  token: env.TOKEN,
-  clientId: env.CLIENT_ID,
+  token: env.DISCORD_BOT_TOKEN,
+  clientId: env.DISCORD_CLIENT_ID,
 }
 
 // DiscordJS API Client: https://discord.js.org/#/docs/discord.js/main/class/Client
-const client = new Client({
+export const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessageReactions,
