@@ -196,7 +196,7 @@ export const getBoard = async (interaction: StringSelectMenuInteraction) => {
         Lists: lists
     }
 
-    return board
+    return board.toString()
 }
 
 export const getAllBoards = async (interaction: CommandInteraction): Promise<Array<Board>> => {
