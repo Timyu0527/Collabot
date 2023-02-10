@@ -3,7 +3,7 @@ import { getAllBoards } from '../service/board'
 import { Board } from '../types/model/board'
 
 export const createBoardSelectMenu= async (interaction: CommandInteraction): Promise<void> => {
-    const boards: Array<Board> = await getAllBoards(interaction)
+    const boards: Array<Board> = await getAllBoards()
     let opts = new Array<APISelectMenuOption>()
     boards.forEach((board: Board) => {
         opts.push({

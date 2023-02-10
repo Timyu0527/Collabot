@@ -2,6 +2,15 @@ import { SlashCommandBuilder, CommandInteraction, CommandInteractionOptionResolv
 import { SlashCommand } from '../types/command'
 import { getAllBoards } from '../service/board'
 
+const boards: = getAllBoards()
+let choices = new Array()
+for (let i = 0; i < boards.length; ++i){
+    choices.push({
+        name: boards[i].name,
+        value: boards[i].id
+    })
+}
+
 export const ListSlashCommand: SlashCommand = {
     data: new SlashCommandBuilder()
         .setName('list')
@@ -9,13 +18,19 @@ export const ListSlashCommand: SlashCommand = {
             subcommand
                 .setName('get')
                 .setDescription('List all board IDs and names.')
+                .addStringOption((option) =>
+                    option
+                        .setName('board_id')
+                        .setDescription('Board ID')
+                        .setChoices(board)
+                )
         )
         .setDescription('list command.'),
     execute: async (interaction: CommandInteraction) => {
         const opts = interaction.options as CommandInteractionOptionResolver
         const subcommand: string = opts.getSubcommand()
         if (subcommand == 'get') {
-            const boards = await getAllBoards(interaction)
+            const boards = await getAllBoards()
 
 
             if (boards){

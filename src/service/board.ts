@@ -195,7 +195,7 @@ export const getBoard = async (interaction: StringSelectMenuInteraction) => {
     return board
 }
 
-export const getAllBoards = async (interaction: CommandInteraction): Promise<Array<Board>> => {
+export const getAllBoards = async (): Promise<Array<Board>> => {
     let boardList: Array<Board> = new Array<Board>()
     await fetch(`https://api.trello.com/1/members/me?${trelloAPIKeyAndToken}`, {
         method: 'GET',

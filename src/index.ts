@@ -3,7 +3,6 @@ import { Client, GatewayIntentBits } from 'discord.js'
 import { FoodSlashCommand } from './commands/food'
 import { PoleSlashCommand } from './commands/pole'
 import { deploySlashCommands } from './deploy'
-import { AppConfig } from './types/config'
 import { setBotListener } from './bot'
 import { SlashCommand } from './types/command'
 import { cleanEnv, str } from 'envalid'
@@ -24,7 +23,7 @@ export const db: Firestore = getFirestore(app)
 // Register commands
 const commandList: Array<SlashCommand> = [
   BoardSlashCommand,
-  ListSlashCommand,
+  // ListSlashCommand,
   // FoodSlashCommand,
   // PoleSlashCommand,
   // ChannelSlashCommand,
