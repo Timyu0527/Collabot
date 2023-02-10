@@ -1,4 +1,4 @@
-import { collection, getDocs, Firestore, DocumentData,addDoc,where,query } from 'firebase/firestore/lite';
+import { collection, getDocs, Firestore, DocumentData,addDoc,where,query, Query } from 'firebase/firestore/lite';
 
 export async function getCities(db: Firestore, collectionName: string){
     const querySnapshot = await getDocs(collection(db, collectionName));
@@ -7,8 +7,9 @@ export async function getCities(db: Firestore, collectionName: string){
     });
 }
 
-export async function addRestaurant(db: Firestore, name:string,tel:string,image:string,guildId: string) {
-    addDoc(collection(db,"restaurant"), {
+export async function addRestaurant(db: Firestore, name:string,tel:string,image:string,guildId: string,userId:string) {
+    await addDoc(collection(db,'restaurant'), {
+        userId: userId,
         guildId: guildId,
         name: name,
         tel: tel,
@@ -16,13 +17,17 @@ export async function addRestaurant(db: Firestore, name:string,tel:string,image:
     });
 }
 
-export async function getRestaurant(db: Firestore,name:string,guildId: string) {
-    const q= query(collection(db, "restaurant"), where("guildId", "==", guildId), where("name", "==", name));
-    let ret:DocumentData[]=[];
-    getDocs(q).then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            ret.push(doc.data());
-        });
+export async function getRestaurant(db: Firestore,name:string,guildId: string,userId:string) {
+    let q:Query<DocumentData>;
+    if(guildId==''){
+        q = query(collection(db, 'restaurant'), where('userId', '==', userId), where('name', '==', name));
+    }else{
+        q = query(collection(db, 'restaurant'),where('guildId','==',guildId),where('name','==',name));
+    }
+    let querySnapshot=await getDocs(q);
+    let result:DocumentData[]=[];
+    querySnapshot.forEach((doc)=>{
+        result.push(doc.data());
     });
-    return ret;
+    return result;
 }

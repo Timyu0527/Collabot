@@ -1,11 +1,12 @@
 import fetch from 'node-fetch';
 import { env } from '../config';
-import { CommandInteraction } from 'discord.js';
+import { CommandInteraction, CommandInteractionOptionResolver } from 'discord.js';
 import { GetTrelloBoardResponse } from '../types/response';
 import { Board } from '../types/model';
 
 export const getAllBoards = async (interaction: CommandInteraction) => {
-    let subcommand: string = interaction.options.getSubcommand();
+    const opts = interaction.options as CommandInteractionOptionResolver;
+    let subcommand: string = opts.getSubcommand();
     let boardList: Array<Board> = new Array<Board>();
     if(subcommand == 'list') {
         await fetch(`https://api.trello.com/1/members/me?key=${env.TRELLO_API_KEY}&token=${env.TRELLO_TOKEN}`, {
