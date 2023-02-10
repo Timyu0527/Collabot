@@ -54,9 +54,9 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
           }
           await (wait(totalTime))
           if (interaction.guildId == null) {
-            await interaction.user.send(`@everyone ${interaction.fields.getTextInputValue('mes')}`);
+            await interaction.user.send(`@everyone 😃 ${interaction.fields.getTextInputValue('mes')}`);
           } else {
-            await interaction.channel?.send(`@everyone ${interaction.fields.getTextInputValue('mes')}`);
+            await interaction.channel?.send(`@everyone 😃 ${interaction.fields.getTextInputValue('mes')}`);
           }
         }
       }
@@ -84,9 +84,9 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
           }
           await (wait(totalTime))
           if (interaction.guildId == null) {
-            await interaction.user.send(`@everyone ${interaction.fields.getTextInputValue('mes')}`);
+            await interaction.user.send(`@everyone 😃 ${interaction.fields.getTextInputValue('mes')}`);
           } else {
-            await interaction.channel?.send(`@everyone ${interaction.fields.getTextInputValue('mes')}`);
+            await interaction.channel?.send(`@everyone 😃 ${interaction.fields.getTextInputValue('mes')}`);
           }
         }
       } catch (error) {
