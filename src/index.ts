@@ -24,7 +24,7 @@ export const db: Firestore = getFirestore(app)
 
 // Register commands
 const commandList: Array<SlashCommand> = [
-    BoardSlashCommand,
+    //BoardSlashCommand,
     FoodSlashCommand,
     PollSlashCommand,
     AbsenceSlashCommand,
