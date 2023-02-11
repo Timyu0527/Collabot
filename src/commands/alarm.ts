@@ -33,7 +33,7 @@ export const AlarmSlashCommand: SlashCommand = {
                 break
             case 'notify':
                 modal.setCustomId('alarm.notify')
-                time.setLabel("設定提醒時間 格式為YY:MM:DD:HH:MM:SS")
+                time.setLabel("設定提醒時間 格式為YYYY:MM:DD:HH:MM:SS")
                 break
         }
         modal.addComponents(new ActionRowBuilder<TextInputBuilder>().addComponents(time));
