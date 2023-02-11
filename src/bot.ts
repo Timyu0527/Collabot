@@ -24,15 +24,18 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
   })
 
   client.on(Events.InteractionCreate, async (interaction) => {
+    const maxTimeWait = 2000000000
     const wait = (ms: number) => {
       return new Promise(async resolve => {
         setTimeout(resolve, ms);
       })
     }
     if (!interaction.isModalSubmit()) return
-    if (interaction.customId === "newBoardModal")
+    if (interaction.customId === "newBoardModal"){
       await createBoard(interaction)
-    if (interaction.isModalSubmit() && interaction.customId == "myModal") {
+      await interaction.reply('Your submission was received successfully!')
+    }
+    else if (interaction.isModalSubmit() && interaction.customId == "myModal") {
       try {
         console.log(interaction)
         await interaction.reply({ content: '創建成功!' });
@@ -41,8 +44,7 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         console.log(error)
       }
     }
-    const maxTimeWait = 2000000000
-    if (interaction.isModalSubmit() && interaction.customId == "alarm.countdown") {
+    else if (interaction.isModalSubmit() && interaction.customId == "alarm.countdown") {
       try {
         let time: Array<string> = interaction.fields.getTextInputValue('time').split(":")
         let timestamp = new Array<number>()
@@ -71,7 +73,7 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         console.log(error)
       }
     }
-    if (interaction.isModalSubmit() && interaction.customId == "alarm.notify") {
+    else if (interaction.isModalSubmit() && interaction.customId == "alarm.notify") {
       try {
         let time: Array<string> = interaction.fields.getTextInputValue('time').split(":")
         let timestamp = new Array<number>()
@@ -100,7 +102,6 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         console.log(error)
       }
     }
-    // await interaction.reply('Your submission was received successfully!')
   })
 
   client.on(Events.InteractionCreate, async (interaction) => {
