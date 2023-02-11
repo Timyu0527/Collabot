@@ -87,7 +87,7 @@ export const getAbsenceCommand: SlashCommand = {
             const embed = new EmbedBuilder()
                 .setTitle('Absence User')
                 .setDescription(`${user}`)
-                .addFields({ name: 'Absence Day', value: day })
+                .addFields({ name: 'Absence Day', value: day+' ' })
                 .setColor(0x00ff00)
             interaction.reply({ embeds: [embed] });
         }
