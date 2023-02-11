@@ -81,7 +81,8 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
           timestamp.push(Number(value))
         })
         let alarm = new Date(timestamp[0], timestamp[1] - 1, timestamp[2], timestamp[3], timestamp[4], timestamp[5])
-        let totalTime = alarm.getTime() - new Date().getTime()
+        let timeZone = 8 * 3600 * 1000//Asia/Taipei
+        let totalTime = alarm.getTime() - new Date().getTime()-timeZone
         if (totalTime < 0)
           await interaction.reply({ content: `這段時間已經過去了!請輸入正常時間!` });
         else {

@@ -41,7 +41,8 @@ export const PollSlashCommand: SlashCommand = {
             }
             let alarm = new Date(timestamp[0], timestamp[1] - 1, timestamp[2], timestamp[3], timestamp[4], timestamp[5]);
             console.log(alarm);
-            DueTime = alarm.getTime() - new Date().getTime()
+            let timeZone = 8 * 3600 * 1000//Asia/Taipei
+            DueTime = alarm.getTime() - new Date().getTime()-timeZone
             if (DueTime < 0) {
                 await interaction.reply({ content: '這段時間已經過去了!請輸入正常時間!' });
                 return;
