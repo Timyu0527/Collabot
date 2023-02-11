@@ -111,7 +111,7 @@ export const getAbsenceCommand: SlashCommand = {
             const embed = new EmbedBuilder()
                 .setTitle('Absence Day')
                 .setDescription(alarm.getFullYear() + '/' + (alarm.getMonth() + 1) + '/' + alarm.getDate())
-                .addFields({ name: 'Absence User', value: user })
+                .addFields({ name: 'Absence User', value: user + ' ' })
                 .setColor(0x00ff00)
             interaction.reply({ embeds: [embed] });
             console.log(user);
