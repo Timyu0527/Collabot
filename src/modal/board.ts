@@ -1,4 +1,4 @@
-import { ActionRowBuilder, CommandInteraction, ModalActionRowComponentBuilder, ModalBuilder, StringSelectMenuBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
+import { ActionRowBuilder, CommandInteraction, ModalActionRowComponentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
 
 export const createBoardModal = async (interaction: CommandInteraction): Promise<void> => {
     const modal = new ModalBuilder()

@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import { env, trelloAPIKeyAndToken } from '../config'
-import { CommandInteraction, ModalSubmitInteraction, StringSelectMenuInteraction } from 'discord.js'
+import { ModalSubmitInteraction, StringSelectMenuInteraction } from 'discord.js'
 import { Board, Card, CheckList, List } from '../types/model/board'
 import { collection, addDoc, getDocs } from 'firebase/firestore'
 import { db } from '..'

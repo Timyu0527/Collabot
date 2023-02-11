@@ -1,18 +1,12 @@
 import {
     SlashCommandBuilder,
     CommandInteraction,
-    SlashCommandStringOption,
     EmbedBuilder,
     CommandInteractionOptionResolver,
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
-    EmbedAuthorOptions
 } from 'discord.js'
 import { AddAbsenceInfo, GetUserAbsenceInfo, GetDateAbsenceInfo,deleteAbsenceInfo } from '../service/absence'
 import { SlashCommand } from '../types/command'
 import { db } from '../index'
-import { DocumentData, Firestore } from 'firebase/firestore'
 export const AbsenceSlashCommand: SlashCommand = {
     data: new SlashCommandBuilder()
         .setName('absence')

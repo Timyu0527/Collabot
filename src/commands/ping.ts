@@ -1,7 +1,5 @@
 import { SlashCommandBuilder, CommandInteraction, SlashCommandStringOption } from 'discord.js'
 import { SlashCommand } from '../types/command'
-// import { getCities } from '../firebase/utils'
-// import { db } from '../index'
 
 export const PingSlashCommand: SlashCommand = {
   data: new SlashCommandBuilder()

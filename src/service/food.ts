@@ -8,8 +8,6 @@ import {
     query,
     Query,
     deleteDoc,
-    setDoc,
-    doc
 } from 'firebase/firestore';
 import { orderValue } from '../types/orderValue';
 

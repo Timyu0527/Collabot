@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, CommandInteraction, ActionRowBuilder, CommandInteractionOptionResolver, ButtonBuilder, TextInputBuilder, TextInputStyle, ModalBuilder } from 'discord.js'
+import { SlashCommandBuilder, CommandInteraction, ActionRowBuilder, CommandInteractionOptionResolver, TextInputBuilder, TextInputStyle, ModalBuilder } from 'discord.js'
 import { SlashCommand } from '../types/command'
 
 export const AlarmSlashCommand: SlashCommand = {

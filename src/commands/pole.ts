@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, CommandInteraction, MessageReaction, ClientUser, EmbedBuilder, CommandInteractionOptionResolver } from 'discord.js'
+import { SlashCommandBuilder, CommandInteraction, MessageReaction, EmbedBuilder, CommandInteractionOptionResolver } from 'discord.js'
 import { SlashCommand } from '../types/command'
 import { EmbedField } from '../types/utility'
 

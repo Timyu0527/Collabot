@@ -4,7 +4,6 @@ import { createBoardModal } from './modal/board'
 import { SlashCommand } from './types/command'
 import { createBoardSelectMenu } from './menu/board'
 import { List } from './types/model/board'
-import { createBoardEmbed } from './embed/board'
 
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
   const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
@@ -15,7 +14,7 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
 
   client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isStringSelectMenu()) return
-    const board: string = await getBoard(interaction)
+    const board: Array<{name: string, Lists: Array<List>}>= await getBoard(interaction)
     await interaction.reply('You selected card successfully!')
   })
 

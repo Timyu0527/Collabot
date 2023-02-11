@@ -5,18 +5,13 @@ import {
     SlashCommandNumberOption,
     EmbedBuilder,
     CommandInteractionOptionResolver,
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
     EmbedAuthorOptions,
-    RestOrArray,
-    APIEmbedField,
     EmbedField
 } from 'discord.js'
 import { SlashCommand } from '../types/command'
 import { db } from '../index'
 import { addRestaurant, checkOrderStarted, getRestaurant,orderAdd,startOrder,orderResult, getOrderInfo } from '../service/food'
-import { DocumentData, Firestore } from 'firebase/firestore'
+import { DocumentData } from 'firebase/firestore'
 import { orderValue } from '../types/orderValue'
 
 export const FoodSlashCommand: SlashCommand = {
