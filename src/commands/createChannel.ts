@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, CommandInteraction, GuildCreateOptions, PermissionFlagsBits, ButtonBuilder, ButtonStyle, ActionRowBuilder, CommandInteractionOptionResolver, StringSelectMenuBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, SelectMenuOptionBuilder } from 'discord.js'
+import { SlashCommandBuilder, CommandInteraction, GuildCreateOptions, PermissionFlagsBits, ButtonBuilder, ButtonStyle, ActionRowBuilder, CommandInteractionOptionResolver } from 'discord.js'
 import { SlashCommand } from '../types/command'
 import { client } from '../index'
 
@@ -24,54 +24,59 @@ export const ChannelSlashCommand: SlashCommand = {
         )
         .setDescription('創建一個文字頻道!'),
     async execute(interaction: CommandInteraction) {
-        const guild = await client.guilds.fetch(`${interaction.guild?.id}`)//client id
-        const everyoneRole = guild.roles.everyone
-        const opts = interaction.options as CommandInteractionOptionResolver;
-        let make: GuildCreateOptions = { "name": `${opts.getString('頻道名稱')}}` }
-        const channel = await guild.channels.create(make)
-        if (opts.getString('頻道標題') != null) {
-            channel.setTopic(`${opts.getString('頻道標題')}`)
-        }
-        if (opts.getBoolean('公開選項') == false) {
-            try {
-                channel.permissionOverwrites.set([
-                    {
-                        id: everyoneRole.id,
-                        deny: [PermissionFlagsBits.ViewChannel],
-                    },
-                ])
+        if (interaction.guildId == null) {
+            await interaction.reply("請在伺服器內添加頻道!")
+
+        } else {
+            const guild = await client.guilds.fetch(`${interaction.guild?.id}`)//client id
+            const everyoneRole = guild.roles.everyone
+            const opts = interaction.options as CommandInteractionOptionResolver;
+            let make: GuildCreateOptions = { "name": `${opts.getString('頻道名稱')}}` }
+            const channel = await guild.channels.create(make)
+            if (opts.getString('頻道標題') != null) {
+                channel.setTopic(`${opts.getString('頻道標題')}`)
             }
-            catch (error) {
-                await interaction.reply("發生了一個錯誤，無法添加頻道")
+            if (opts.getBoolean('公開選項') == false) {
+                try {
+                    channel.permissionOverwrites.set([
+                        {
+                            id: everyoneRole.id,
+                            deny: [PermissionFlagsBits.ViewChannel],
+                        },
+                    ])
+                }
+                catch (error) {
+                    await interaction.reply("發生了一個錯誤，無法添加頻道")
+                }
             }
+            const row = new ActionRowBuilder<ButtonBuilder>()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('close')
+                        .setLabel('關閉此頻道')
+                        .setStyle(ButtonStyle.Primary)
+                )
+            channel?.send({ components: [row] })
+            // const modal = new ModalBuilder()
+            //     .setCustomId('myModal')
+            //     .setTitle('My Modal');
+
+            // const fa = new TextInputBuilder()
+            //     .setCustomId('favoriteColorInput')
+            //     // The label is the prompt the user sees for this input
+            //     .setLabel("What's your favorite color?")
+            //     // Short means only a single line of text
+            //     .setStyle(TextInputStyle.Short);
+
+            // const tt = new StringSelectMenuBuilder()
+            //     .addOptions()
+            // const firstActionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(fa)
+            // // const cc = new ActionRowBuilder().addComponents(tt);
+
+            // // Add inputs to the modal
+            // modal.addComponents(firstActionRow);
+            // await interaction.showModal(modal);
+            await interaction.reply('創建成功')
         }
-        const row = new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('close')
-                    .setLabel('關閉此頻道')
-                    .setStyle(ButtonStyle.Primary)
-            )
-        channel?.send({ components: [row] })
-        // const modal = new ModalBuilder()
-        //     .setCustomId('myModal')
-        //     .setTitle('My Modal');
-
-        // const fa = new TextInputBuilder()
-        //     .setCustomId('favoriteColorInput')
-        //     // The label is the prompt the user sees for this input
-        //     .setLabel("What's your favorite color?")
-        //     // Short means only a single line of text
-        //     .setStyle(TextInputStyle.Short);
-
-        // const tt = new StringSelectMenuBuilder()
-        //     .addOptions()
-        // const firstActionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(fa)
-        // // const cc = new ActionRowBuilder().addComponents(tt);
-
-        // // Add inputs to the modal
-        // modal.addComponents(firstActionRow);
-        // await interaction.showModal(modal);
-        await interaction.reply('創建成功')
     }
 }
