@@ -169,3 +169,16 @@ export async function getOrderInfo(db:Firestore,guildId:string,userId:string) {
         throw err;
     }
 }
+
+export async function deleteRestaurant(db:Firestore,name:string,guildId:string,userId:string) {
+    try{
+        let q= query(collection(db, 'restaurant'), where('name', '==', name));
+        let querySnapshot=await getDocs(q);
+        querySnapshot.forEach((doc)=>{
+            deleteDoc(doc.ref);
+        });
+    }catch(err){
+        console.error('delete restaurant error: ',err);
+        throw err;
+    }
+}

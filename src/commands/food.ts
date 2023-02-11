@@ -10,7 +10,7 @@ import {
 } from 'discord.js'
 import { SlashCommand } from '../types/command'
 import { db } from '../index'
-import { addRestaurant, checkOrderStarted, getRestaurant,orderAdd,startOrder,orderResult, getOrderInfo } from '../service/food'
+import { addRestaurant, checkOrderStarted, getRestaurant,orderAdd,startOrder,orderResult, getOrderInfo, deleteRestaurant } from '../service/food'
 import { DocumentData } from 'firebase/firestore'
 import { orderValue } from '../types/orderValue'
 
@@ -48,6 +48,17 @@ export const FoodSlashCommand: SlashCommand = {
                     command
                         .setName('info')
                         .setDescription('查詢餐廳資訊')
+                        .addStringOption((option: SlashCommandStringOption) =>
+                            option
+                                .setName('name')
+                                .setDescription('店家名稱')
+                                .setRequired(true)
+                        )
+                )
+                .addSubcommand((command) =>
+                    command
+                        .setName('delete')
+                        .setDescription('刪除餐廳')
                         .addStringOption((option: SlashCommandStringOption) =>
                             option
                                 .setName('name')
@@ -192,6 +203,36 @@ export const FoodSlashCommand: SlashCommand = {
                         await interaction.reply({ embeds: embeds })
                     }
                     break
+                case 'delete':
+                    const deleteName = opts.getString('name', true);
+                    try {
+                        let deleteCheckExist: Array<DocumentData> = await getRestaurant(db, deleteName, interaction.guildId ?? '', interaction.user.id);
+                        if (deleteCheckExist.length == 0) {
+                            let cannotDeleteEmbed = new EmbedBuilder()
+                                .setTitle(`無法刪除${deleteName}`)
+                                .setDescription(`${deleteName}不存在`)
+                                .setColor('#ff0000')
+                                .setTimestamp()
+                            await interaction.reply({ embeds: [cannotDeleteEmbed] })
+                            return;
+                        }
+                        await deleteRestaurant(db, deleteName, interaction.guildId ?? '', interaction.user.id);
+                        let resultEmbed = new EmbedBuilder()
+                            .setTitle(`已刪除${deleteName}`)
+                            .setColor('#00ff00')
+                            .setTimestamp()
+                        await interaction.reply({ embeds: [resultEmbed] })
+                    } catch (err) {
+                        let errEmbed = new EmbedBuilder()
+                            .setTitle('Something wrong')
+                            .setDescription(':thinking:')
+                            .setColor('#ff0000')
+                            .setTimestamp();
+                        console.log(err)
+                        await interaction.reply({ embeds: [errEmbed] });
+                        return;
+                    }
+                    break;
                 default:
                     await interaction.reply('default')
                     break
