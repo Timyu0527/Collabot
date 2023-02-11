@@ -13,7 +13,7 @@ export const PollSlashCommand: SlashCommand = {
                 .setDescription('Separated by commas(maximum:20)'))
         .addStringOption(option =>
             option.setName('time')
-                .setDescription('the due time'))
+                .setDescription('the due time(the format is yyyy:mm:dd:hh:mm:ss)'))
         .setDescription('start poll')
     ,
     async execute(interaction: CommandInteraction) {
@@ -34,7 +34,13 @@ export const PollSlashCommand: SlashCommand = {
             t.forEach((value: string) => {
                 timestamp.push(Number(value))
             })
-            let alarm = new Date(timestamp[0], timestamp[1] - 1, timestamp[2], timestamp[3], timestamp[4], timestamp[5])
+            if (timestamp.length !== 6) {
+                for (let i = timestamp.length; i < 6; i++) {
+                    timestamp.push(0);
+                }
+            }
+            let alarm = new Date(timestamp[0], timestamp[1] - 1, timestamp[2], timestamp[3], timestamp[4], timestamp[5]);
+            console.log(alarm);
             DueTime = alarm.getTime() - new Date().getTime()
             if (DueTime < 0) {
                 await interaction.reply({ content: '這段時間已經過去了!請輸入正常時間!' });
@@ -76,16 +82,9 @@ export const PollSlashCommand: SlashCommand = {
         }
         console.log("duetime", DueTime);
         const collector = message.createReactionCollector({ filter, time: DueTime });
-        // collector.on('collect', (reaction) => {
-        //     console.log(reaction.emoji.name, reaction.emoji.id)
-        //     reaction.users.cache.forEach((element) => {
-        //         console.log(element.id);
-        //     });
-        // });
         collector.on('end', async collected => {
 
             console.log(`Collected ${collected.size} items`);
-            // console.log(collected.get('👍')?.count);
             let maxnumber: number = 0;
             for (let i = 0; i < Math.min(20, choices.length); i++) {
                 const reaction: number = polestart + i
@@ -136,12 +135,10 @@ export const PollSlashCommand: SlashCommand = {
                     value: PercentString
                 }
                 embedFields.push(embedField);
-                // EmbedResult.addField(embedField);
             }
             const EmbedResult = new EmbedBuilder()
                 .setColor(0x0099FF)
-                .setTitle(`${title} result`)
-                // .addFields({ name: 'winner', value: String.fromCodePoint(0x26AA) });
+                .setTitle(`${title}'s result`)
                 .addFields(embedFields);
             interaction.channel?.send({ embeds: [EmbedResult] });
         }
