@@ -1,8 +1,10 @@
-import { Client, Collection, Events, ModalSubmitInteraction } from 'discord.js'
+import { Client, Collection, Events } from 'discord.js'
 import { createBoard, getBoard } from './service/board'
 import { createBoardModal } from './modal/board'
 import { SlashCommand } from './types/command'
 import { createBoardSelectMenu } from './menu/board'
+import { List } from './types/model/board'
+import { createBoardEmbed } from './embed/board'
 
 export function setBotListener(client: Client, commandList: Array<SlashCommand>) {
   const commands = new Collection<string, SlashCommand>(commandList.map((c) => [c.data.name, c]))
