@@ -19,7 +19,7 @@ export const AbsenceSlashCommand: SlashCommand = {
         .addStringOption(option =>
             option
                 .setName('time')
-                .setDescription('the time you want to absence')
+                .setDescription('the time you want to absence(the format is yyyy:mm:dd)')
                 .setRequired(true)
         )
         .setDescription('absence')
@@ -33,7 +33,9 @@ export const AbsenceSlashCommand: SlashCommand = {
         }
         let timestamp: Array<string> = time.split(':');
         let alarm = new Date(Number(timestamp[0]), Number(timestamp[1]) - 1, Number(timestamp[2]))
-        await AddAbsenceInfo(db, interaction.user.id, alarm)
+        await AddAbsenceInfo(db, interaction.user.id, alarm).then(async () => {
+            await interaction.reply({ content: '請假完成' });
+        })
         const wait = (ms: number) => {
             return new Promise(async resolve => {
                 setTimeout(resolve, ms);
@@ -72,14 +74,21 @@ export const getAbsenceCommand: SlashCommand = {
         if (opts.getSubcommand() === 'user') {
             const user = opts.getUser('user');
             if (user === null) {
-                await interaction.reply({ content: '請輸入時間!' });
+                await interaction.reply({ content: '請輸入使用者!' });
                 return;
             }
             const absenceInfo = await GetUserAbsenceInfo(db, user.id);
+            let dayarray: Array<string> = [];
             let day: string = '';
             for (let i = 0; i < absenceInfo.length; i++) {
                 const element = absenceInfo[i].time.toDate();
-                day += element.getFullYear() + '/' + (element.getMonth() + 1) + '/' + element.getDate() + '\n';
+                if (!dayarray.includes(element.getFullYear() + '/' + (element.getMonth() + 1) + '/' + element.getDate())) {
+                    dayarray.push(element.getFullYear() + '/' + (element.getMonth() + 1) + '/' + element.getDate());
+                }
+            }
+            dayarray.sort();
+            for (let i = 0; i < dayarray.length; i++) {
+                day += dayarray[i] + '\n';
             }
             const embed = new EmbedBuilder()
                 .setTitle('Absence User')
@@ -97,9 +106,13 @@ export const getAbsenceCommand: SlashCommand = {
             let timestamp: Array<string> = date.split(':');
             let alarm = new Date(Number(timestamp[0]), Number(timestamp[1]) - 1, Number(timestamp[2]))
             const absenceInfo = await GetDateAbsenceInfo(db, alarm);
+            let userarray: Array<string> = [];
             let user: string = '';
             for (let i = 0; i < absenceInfo.length; i++) {
-                user += `<@${absenceInfo[i].userId}>` + '\n';
+                if (!userarray.includes(absenceInfo[i].userId)) {
+                    userarray.push(absenceInfo[i].userId);
+                    user += `<@${absenceInfo[i].userId}>` + '\n';
+                }
             }
             const embed = new EmbedBuilder()
                 .setTitle('Absence Day')
