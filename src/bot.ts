@@ -56,20 +56,6 @@ export function setBotListener(client: Client, commandList: Array<SlashCommand>)
         }
     })
 
-    // client.on(Events.InteractionCreate, async (interaction) => {
-    //     if (interaction.isButton() && interaction.customId == "food.order.accept") {
-    //         let userId=interaction.user.id
-    //         console.log("clicked")
-    //             if (interaction.channel==null) return
-    //             await interaction.channel.send(':middle_finger:')
-    //     } else if (interaction.isButton() && interaction.customId == "food.order.result"){
-    //         let userId=interaction.user.id
-    //         console.log("clicked")
-    //             if (interaction.channel==null) return
-    //             await interaction.channel.send(':middle_finger:')
-    //     }
-    // })
-
     client.on(Events.InteractionCreate, async (interaction) => {
     const wait = (ms: number) => {
       return new Promise(async resolve => {
