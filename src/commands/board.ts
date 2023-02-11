@@ -25,7 +25,7 @@ export const BoardSlashCommand: SlashCommand = {
         const opts = interaction.options as CommandInteractionOptionResolver
         const subcommand: string = opts.getSubcommand()
         if (subcommand == 'list') {
-            const boards = await getAllBoards(interaction)
+            const boards = await getAllBoards()
 
 
             if (boards){
